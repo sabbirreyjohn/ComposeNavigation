@@ -8,22 +8,20 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.androidrey.composenavigation.ui.theme.ComposeNavigationTheme
+import com.androidrey.composenavigation.ui.view.userlistscreen.UserListViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeNavigationTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
-                }
+                Greeting(name = "")
             }
         }
     }
@@ -31,7 +29,9 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+    val viewModel = viewModel<UserListViewModel>()
+    val users by viewModel.users.collectAsState()
+    Text(text = "Hello ${users.size}")
 }
 
 @Preview(showBackground = true)
