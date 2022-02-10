@@ -22,10 +22,10 @@ private val retrofit =
 
 interface UserApiInterface {
     @GET("users")
-    fun getusers(@Query("since") lastUserId: Int): Flow<List<User>>
+    suspend fun getusers(@Query("since") lastUserId: Int): List<User>
 
     @GET("users/{USER_NAME}")
-    fun getProfile(@Path("USER_NAME") username: String): Flow<Profile>
+    suspend fun getProfile(@Path("USER_NAME") username: String): Profile
 }
 
 object UserApi {
