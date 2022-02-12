@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ComposeNavigation</string>
+    <string name="sample_text">This is my name</string>
 </resources>

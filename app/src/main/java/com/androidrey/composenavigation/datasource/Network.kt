@@ -25,7 +25,7 @@ interface UserApiInterface {
     suspend fun getusers(@Query("since") lastUserId: Int): List<User>
 
     @GET("users/{USER_NAME}")
-    suspend fun getProfile(@Path("USER_NAME") username: String): Profile
+    suspend fun getProfile(@Path("USER_NAME") username: String?): Profile
 }
 
 object UserApi {

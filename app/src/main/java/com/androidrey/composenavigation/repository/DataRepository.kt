@@ -8,6 +8,6 @@ class DataRepository(private val database: TheDatabase) {
     suspend fun getUsersFromServer() = UserApi.userApiInterface.getusers(0)
     suspend fun getUsersFromDB() = database.userDao.getUsers()
     suspend fun insertUsersToDB(users: List<User>) = database.userDao.insertAll( users)
-    suspend fun getProfileFromServer(username: String) =
+    suspend fun getProfileFromServer(username: String?) =
         UserApi.userApiInterface.getProfile(username)
 }
