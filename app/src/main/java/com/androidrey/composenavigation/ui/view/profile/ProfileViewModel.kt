@@ -9,6 +9,7 @@ import com.androidrey.composenavigation.datasource.getDatabase
 import com.androidrey.composenavigation.model.Profile
 import com.androidrey.composenavigation.model.User
 import com.androidrey.composenavigation.repository.DataRepository
+import com.androidrey.composenavigation.util.Status
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -16,8 +17,12 @@ class ProfileViewModel(application: Application, userName: String?) :
     AndroidViewModel(application) {
 
     val repo = DataRepository(getDatabase(application))
+
     private var _profile = MutableStateFlow<Profile>(Profile())
     val profile get() = _profile
+
+    private val _hasError = MutableStateFlow<Boolean>(false)
+    val hasError get() = _hasError
 
     init {
         loadProfile(userName)
@@ -25,12 +30,17 @@ class ProfileViewModel(application: Application, userName: String?) :
 
     private fun loadProfile(userName: String?) {
         viewModelScope.launch {
-            try {
-                val tempProfile = repo.getProfileFromServer(userName)
-                _profile.emit(tempProfile)
+            val status = repo.getProfileFromServer(username = userName)
+            when (status) {
+                is Status.Success -> {
+                    _hasError.value = false
+                    _profile.value = status.data!!
+                }
+                is Status.Error -> {
+                    _hasError.value = true
+                    _profile.value = Profile()
+                }
 
-            } catch (networkError: Exception) {
-                networkError.printStackTrace()
             }
         }
     }

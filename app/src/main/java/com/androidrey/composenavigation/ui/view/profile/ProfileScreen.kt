@@ -8,6 +8,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -17,7 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberImagePainter
 import com.androidrey.composenavigation.R
+import com.androidrey.composenavigation.model.Profile
 import com.androidrey.composenavigation.model.User
+import com.androidrey.composenavigation.ui.view.userlist.ShowError
 import com.androidrey.composenavigation.ui.view.userlist.UserListViewModel
 
 @Composable
@@ -30,7 +33,8 @@ fun ProfileScreen(userName: String? = null) {
             )
         )
     val profile by viewModel.profile.collectAsState()
-    Row(
+    val hasError by viewModel.hasError.collectAsState()
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
@@ -38,6 +42,17 @@ fun ProfileScreen(userName: String? = null) {
             .border(width = 1.dp, color = Color.Black)
             .padding(12.dp)
     ) {
+        if (hasError)
+            ShowProfileError()
+        else
+            ShowProfileCard(profile)
+    }
+
+}
+
+@Composable
+fun ShowProfileCard(profile: Profile) {
+    Row {
         Image(
             painter = rememberImagePainter(profile.avatar_url),
             contentDescription = "Launcher",
@@ -50,5 +65,19 @@ fun ProfileScreen(userName: String? = null) {
             profile.bio?.let { Text(text = it, color = Color.Black) }
             profile.blog?.let { Text(text = it, color = Color.Black) }
         }
+    }
+}
+
+@Composable
+fun ShowProfileError() {
+    Box(
+        contentAlignment = Alignment.Center
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.ic_baseline_error_outline_24),
+            contentDescription = "failed",
+            modifier = Modifier.size(128.dp)
+        )
+
     }
 }
