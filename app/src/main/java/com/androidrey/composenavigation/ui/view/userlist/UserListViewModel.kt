@@ -1,4 +1,4 @@
-package com.androidrey.composenavigation.ui.view.userlistscreen
+package com.androidrey.composenavigation.ui.view.userlist
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
