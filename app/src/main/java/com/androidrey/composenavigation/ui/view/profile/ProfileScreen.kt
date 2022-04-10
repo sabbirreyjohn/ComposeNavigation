@@ -8,20 +8,14 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberImagePainter
-import com.androidrey.composenavigation.R
+import com.androidrey.composenavigation.composables.ShowError
 import com.androidrey.composenavigation.model.Profile
-import com.androidrey.composenavigation.model.User
-import com.androidrey.composenavigation.ui.view.userlist.ShowError
-import com.androidrey.composenavigation.ui.view.userlist.UserListViewModel
 
 @Composable
 fun ProfileScreen(userName: String? = null) {
@@ -43,7 +37,7 @@ fun ProfileScreen(userName: String? = null) {
             .padding(12.dp)
     ) {
         if (hasError)
-            ShowProfileError()
+            ShowError()
         else
             ShowProfileCard(profile)
     }
@@ -65,19 +59,5 @@ fun ShowProfileCard(profile: Profile) {
             profile.bio?.let { Text(text = it, color = Color.Black) }
             profile.blog?.let { Text(text = it, color = Color.Black) }
         }
-    }
-}
-
-@Composable
-fun ShowProfileError() {
-    Box(
-        contentAlignment = Alignment.Center
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_baseline_error_outline_24),
-            contentDescription = "failed",
-            modifier = Modifier.size(128.dp)
-        )
-
     }
 }

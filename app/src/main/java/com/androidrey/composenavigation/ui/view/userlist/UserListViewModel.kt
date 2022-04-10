@@ -13,7 +13,7 @@ import java.io.IOException
 
 class UserListViewModel(application: Application) : AndroidViewModel(application) {
 
-    val repo = DataRepository(getDatabase(application))
+    private val repo = DataRepository(getDatabase(application))
 
     private val _users = MutableStateFlow<List<User>>(mutableListOf())
     val users get() = _users
@@ -28,11 +28,10 @@ class UserListViewModel(application: Application) : AndroidViewModel(application
         loadUserData()
     }
 
-    fun loadUserData() {
+    private fun loadUserData() {
         viewModelScope.launch {
             _isLoading.value = true
-            val status = repo.getUsersFromServer()
-            when (status) {
+            when (val status = repo.getUsersFromServer()) {
                 is Status.Success -> {
                     repo.insertUsersToDB(status.data!!)
                     loadUserListFromDB()
@@ -40,7 +39,9 @@ class UserListViewModel(application: Application) : AndroidViewModel(application
                 is Status.Error -> {
                     loadUserListFromDB()
                 }
+                else -> {
 
+                }
             }
         }
     }

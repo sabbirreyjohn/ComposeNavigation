@@ -1,4 +1,4 @@
-package com.androidrey.composenavigation
+package com.androidrey.composenavigation.ui.view.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
