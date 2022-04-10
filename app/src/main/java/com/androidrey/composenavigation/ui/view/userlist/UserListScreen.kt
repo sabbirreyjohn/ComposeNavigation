@@ -23,6 +23,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import com.androidrey.composenavigation.R
+import com.androidrey.composenavigation.composables.ShowError
+import com.androidrey.composenavigation.composables.ShowProgressBar
 import com.androidrey.composenavigation.model.User
 import com.androidrey.composenavigation.ui.theme.ComposeNavigationTheme
 
@@ -80,31 +82,6 @@ fun UserRow(user: User, navHostController: NavHostController? = null) {
                 Text(text = user.userName, color = Color.Black)
             }
         }
-    }
-}
-
-@Composable
-fun ShowProgressBar() {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        CircularProgressIndicator()
-    }
-}
-
-@Composable
-fun ShowError() {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_baseline_error_outline_24),
-            contentDescription = "failed",
-            modifier = Modifier.size(128.dp)
-        )
-
     }
 }
 
