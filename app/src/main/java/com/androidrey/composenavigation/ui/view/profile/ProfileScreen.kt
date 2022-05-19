@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -18,30 +19,29 @@ import com.androidrey.composenavigation.composables.ShowError
 import com.androidrey.composenavigation.model.Profile
 
 @Composable
-fun ProfileScreen(userName: String? = null) {
-    val viewModel =
-        viewModel<ProfileViewModel>(
-            factory = ProfileViewModel.ProfileViewModelFactory(
-                LocalContext.current.applicationContext as Application,
-                userName
-            )
-        )
+fun ProfileScreen(userName: String? = null, viewModel: ProfileViewModel) {
     val profile by viewModel.profile.collectAsState()
     val hasError by viewModel.hasError.collectAsState()
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(12.dp)
-            .border(width = 1.dp, color = Color.Black)
-            .padding(12.dp)
-    ) {
-        if (hasError)
-            ShowError()
-        else
-            ShowProfileCard(profile)
+
+    LaunchedEffect(profile) {
+        viewModel.loadProfile(userName)
     }
 
+    if (!hasError) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(12.dp)
+                .border(width = 1.dp, color = Color.Black)
+                .padding(12.dp)
+        ) {
+            if (hasError)
+                ShowError()
+            else
+                ShowProfileCard(profile)
+        }
+    }
 }
 
 @Composable
