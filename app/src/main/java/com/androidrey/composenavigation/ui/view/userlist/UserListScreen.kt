@@ -30,9 +30,8 @@ import com.androidrey.composenavigation.ui.theme.ComposeNavigationTheme
 
 
 @Composable
-fun UserListScreen(navHostController: NavHostController? = null) {
+fun UserListScreen(navHostController: NavHostController? = null, viewModel: UserListViewModel) {
     ComposeNavigationTheme {
-        val viewModel = viewModel<UserListViewModel>()
         val users by viewModel.users.collectAsState()
         val isLoading by viewModel.isLoading.collectAsState()
         val hasError by viewModel.hasError.collectAsState()

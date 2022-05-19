@@ -1,16 +1,20 @@
 package com.androidrey.composenavigation.repository
 
 import com.androidrey.composenavigation.datasource.TheDatabase
-import com.androidrey.composenavigation.datasource.UserApi
+import com.androidrey.composenavigation.datasource.UserApiHelper
 import com.androidrey.composenavigation.model.Profile
 import com.androidrey.composenavigation.model.User
 import com.androidrey.composenavigation.util.Status
+import javax.inject.Inject
 
-class DataRepository(private val database: TheDatabase) {
+class DataRepository @Inject internal constructor(
+    private val database: TheDatabase,
+    private val userApiHelper: UserApiHelper
+) {
 
     suspend fun getUsersFromServer(): Status<List<User>> {
         val response = try {
-            UserApi.userApiInterface.getusers(0)
+            userApiHelper.getUsers(0)
         } catch (e: Exception) {
             return Status.Error("An unknown error occured.")
         }
@@ -19,7 +23,7 @@ class DataRepository(private val database: TheDatabase) {
 
     suspend fun getProfileFromServer(username: String?): Status<Profile> {
         val response = try {
-            UserApi.userApiInterface.getProfile(username)
+            userApiHelper.getProfile(username)
         } catch (e: Exception) {
             return Status.Error("An unknown error occured.")
         }

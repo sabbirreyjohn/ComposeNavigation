@@ -1,27 +1,24 @@
 package com.androidrey.composenavigation.ui.view.userlist
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.androidrey.composenavigation.datasource.getDatabase
 import com.androidrey.composenavigation.model.User
 import com.androidrey.composenavigation.repository.DataRepository
 import com.androidrey.composenavigation.util.Status
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import java.io.IOException
+import javax.inject.Inject
 
-class UserListViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val repo = DataRepository(getDatabase(application))
-
+@HiltViewModel
+class UserListViewModel @Inject constructor(private val repo: DataRepository) : ViewModel() {
     private val _users = MutableStateFlow<List<User>>(mutableListOf())
     val users get() = _users
 
-    private val _isLoading = MutableStateFlow<Boolean>(false)
+    private val _isLoading = MutableStateFlow(false)
     val isLoading get() = _isLoading
 
-    private val _hasError = MutableStateFlow<Boolean>(false)
+    private val _hasError = MutableStateFlow(false)
     val hasError get() = _hasError
 
     init {
